@@ -30,10 +30,10 @@ export default async function (req, res) {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: generatePrompt(companyName, companyDescription, productDescription, targetAudience),
-      temperature: 1,
-      max_tokens: 1000,
+      temperature: 0.7,
+      max_tokens: 3000,
     });
-    res.status(200).json({ result: completion.data.choices[0].text.trim() });
+    res.status(200).json({ result: completion.data.choices[0].text});
   } catch (error) {
     if (error.response) {
       console.error(error.response.status, error.response.data);
