@@ -31,7 +31,10 @@ export default function Home() {
       }
 
       setResult(data.result);
-     
+      setCompanyName("");
+      setCompanyDescription("");
+      setProductDescription("");
+      setTargetAudience("");
     } catch (error) {
       console.error(error);
       alert(error.message);
