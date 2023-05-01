@@ -17,24 +17,25 @@ export default async function (req, res) {
 
   const { companyName, companyDescription, productDescription, targetAudience } = req.body;
 
-  if (!companyName || !companyDescription || !productDescription || !targetAudience) {
-    res.status(400).json({
-      error: {
-        message: "Please provide all required fields",
-      },
-    });
-    return;
-  }
-
   try {
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: generatePrompt(companyName, companyDescription, productDescription, targetAudience),
-      temperature: 0.7,
-      max_tokens: 3000,
+      prompt: `Brainstorm 6 original marketing campaigns for ${companyName}, ${companyDescription}. Let your imagination run wild. Provide as much detail as possible and a creative brief for each campaign.
+
+Product: ${productDescription}
+Target Audience: ${targetAudience}
+
+Campaigns:`,
+      temperature: 0.6,
+      max_tokens: 2000,
+      n: 1,
+      stop: null,
     });
-    res.status(200).json({ result: completion.data.choices[0].text});
+
+    console.log(completion.data.choices[0].text.trim());
+    res.status(200).json({ result: completion.data.choices[0].text.trim() });
   } catch (error) {
+    // Consider adjusting the error handling logic for your use case
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json(error.response.data);
@@ -47,12 +48,4 @@ export default async function (req, res) {
       });
     }
   }
-}
-
-function generatePrompt(companyName, companyDescription, productDescription, targetAudience) {
-  return `Brainstorm 6 original marketing campaigns for ${companyName}, ${companyDescription}. Let your imagination run wild. Provide as much detail as possible and a creative brief.
-
-PRODUCT DESCRIPTION: ${productDescription}
-
-TARGET AUDIENCE: ${targetAudience}`;
 }
