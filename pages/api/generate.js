@@ -9,13 +9,19 @@ export default async function (req, res) {
   if (!configuration.apiKey) {
     res.status(500).json({
       error: {
-        message: "OpenAI API key not configured, please follow instructions in README.md",
+        message:
+          "OpenAI API key not configured, please follow instructions in README.md",
       },
     });
     return;
   }
 
-  const { companyName, companyDescription, productDescription, targetAudience } = req.body;
+  const {
+    companyName,
+    companyDescription,
+    productDescription,
+    targetAudience,
+  } = req.body;
 
   try {
     const completion = await openai.createCompletion({
@@ -35,15 +41,33 @@ Campaigns:`,
     console.log(completion.data.choices[0].text.trim());
     res.status(200).json({ result: completion.data.choices[0].text.trim() });
   } catch (error) {
-    // Consider adjusting the error handling logic for your use case
-    if (error.response) {
-      console.error(error.response.status, error.response.data);
-      res.status(error.response.status).json(error.response.data);
-    } else {
-      console.error(`Error with OpenAI API request: ${error.message}`);
+    if (error instanceof openai.error.APIError) {
+      console.error(`OpenAI API returned an API Error: ${error}`);
       res.status(500).json({
         error: {
-          message: 'An error occurred during your request.',
+          message: "An error occurred during your request.",
+        },
+      });
+    } else if (error instanceof openai.error.APIConnectionError) {
+      console.error(`Failed to connect to OpenAI API: ${error}`);
+      res.status(500).json({
+        error: {
+          message: "An error occurred during your request.",
+        },
+      });
+    } else if (error instanceof openai.error.RateLimitError) {
+      console.error(`OpenAI API request exceeded rate limit: ${error}`);
+      res.status(429).json({
+        error: {
+          message:
+            "You have exceeded the rate limit for the OpenAI API. Please wait and try again later.",
+        },
+      });
+    } else {
+      console.error(`Error with OpenAI API request: ${error}`);
+      res.status(500).json({
+        error: {
+          message: "An error occurred during your request.",
         },
       });
     }
