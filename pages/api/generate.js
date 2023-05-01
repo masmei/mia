@@ -42,8 +42,8 @@ PRODUCT DESCRIPTION: ${productDescription}
 TARGET AUDIENCE: ${targetAudience}`
           }
         ],
-        max_tokens: 1000,
-        temperature: 0.6,
+        max_tokens: 1500,
+        temperature: 0.7,
       }),
     });
 
