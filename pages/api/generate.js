@@ -35,7 +35,9 @@ export default async function (req, res) {
           },
           {
             role: "user",
-            content: `this is a test`
+            content: `Brainstorm 6 original marketing campaigns for ${companyName}, ${companyDescription}. Let your imagination run wild. Provide as much detail as possible and a creative brief. 
+            PRODUCT DESCRIPTION: ${productDescription}
+            TARGET AUDIENCE: ${targetAudience}.`
           }
         ],
         max_tokens: 1000,
