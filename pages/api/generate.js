@@ -35,7 +35,7 @@ export default async function (req, res) {
           },
           {
             role: "user",
-            content: `Brainstorm 6 original marketing campaigns for ${companyName}, ${companyDescription}.`
+            content: `Brainstorm 6 original marketing campaigns.`
           }
         ],
         max_tokens: 1000,
