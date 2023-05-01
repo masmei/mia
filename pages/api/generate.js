@@ -34,8 +34,6 @@ Target Audience: ${targetAudience}
 Campaigns:`,
       temperature: 0.6,
       max_tokens: 2000,
-      n: 1,
-      stop: null,
     });
 
     console.log(completion.data.choices[0].text.trim());
