@@ -29,9 +29,7 @@ export default async function (req, res) {
       prompt: `Brainstorm 6 original marketing campaigns for ${companyName}, ${companyDescription}. Let your imagination run wild. Provide as much detail as possible and a creative brief for each campaign.
 
 Product: ${productDescription}
-Target Audience: ${targetAudience}
-
-Campaigns:`,
+Target Audience: ${targetAudience}`,
       temperature: 0.6,
       max_tokens: 300,
     });
