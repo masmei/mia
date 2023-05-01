@@ -1,7 +1,7 @@
 import { Configuration, OpenAIApi } from "openai";
 
 const configuration = new Configuration({
-  apiKey: "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",
+  apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
 
@@ -33,7 +33,7 @@ Target Audience: ${targetAudience}
 
 Campaigns:`,
       temperature: 0.6,
-      max_tokens: 2000,
+      max_tokens: 300,
     });
 
     console.log(completion.data.choices[0].text.trim());
