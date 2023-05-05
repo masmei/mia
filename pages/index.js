@@ -2,6 +2,12 @@ import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
 
+const Spinner = () => (
+  <div className={styles.spinnerContainer}>
+    <div className={styles.spinner}></div>
+  </div>
+);
+
 export default function Home() {
   const [userInput, setuserInput] = useState({
     companyDescription: "",
@@ -97,22 +103,24 @@ export default function Home() {
           />
           <input type="submit" value="Generate" />
         </form>
-        <div className={styles.result}>
-          {loading && <p>Loading...</p>}
-          {error && (
-            <p className={styles.error}>
-              An error occurred during your request. Please try again.
-            </p>
-          )}
-          {!loading &&
-            !error &&
-            result &&
-            result.map((campaign, index) => (
-              <div className={styles.campaign} key={index}>
-                <pre>{campaign}</pre>
-              </div>
-            ))}
-        </div>
+        {error ? (
+          <div className={styles.error}>
+            An error occurred during your request. Please try again.
+          </div>
+        ) : (
+          <div className={styles.result}>
+            {loading ? (
+              <Spinner />
+            ) : (
+              result &&
+              result.map((campaign, index) => (
+                <div className={styles.campaign} key={index}>
+                  <pre>{campaign}</pre>
+                </div>
+              ))
+            )}
+          </div>
+        )}
       </main>
     </div>
   );

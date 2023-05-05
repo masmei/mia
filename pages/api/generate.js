@@ -1,9 +1,21 @@
+
+import { Configuration, OpenAIApi } from "openai";
+
+console.log("OPENAI_API_KEY:", process.env.OPENAI_API_KEY);
+
+const configuration = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
+
 export default async function (req, res) {
-  if (!process.env.OPENAI_API_KEY) {
+  if (!configuration.apiKey) {
     res.status(500).json({
       error: {
-        message: "OpenAI API key not configured, please follow instructions in README.md",
-      }
+        message:
+          "OpenAI API key not configured, please follow instructions in README.md",
+      },
     });
     return;
   }
@@ -20,39 +32,16 @@ export default async function (req, res) {
   }
 
   try {
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: "gpt-3.5-turbo",
-        messages: [
-          {
-            role: "system",
-            content: "You are an AI assistant that helps users brainstorm marketing campaigns."
-          },
-          {
-            role: "user",
-            content: `Brainstorm 3 original marketing campaigns for ${companyName}, ${companyDescription}. Let your imagination run wild. Provide as much detail as possible and a creative brief.
-
-PRODUCT DESCRIPTION: ${productDescription}
-
-TARGET AUDIENCE: ${targetAudience}`
-          }
-        ],
-        max_tokens: 800,
-        temperature: 1,
-      }),
+    const completion = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: generatePrompt(companyName, companyDescription, productDescription, targetAudience),
+      temperature: 1,
+      max_tokens: 300,
     });
 
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
-    }
+    // const result = completion.data.choices[0].text.trim();
 
-    res.status(200).json({ result: data.choices[0].message.content });
+    res.status(200).json({ result: completion.data.choices[0].text });
   } catch (error) {
     if (error.response) {
       console.error(error.response.status, error.response.data);
@@ -61,9 +50,19 @@ TARGET AUDIENCE: ${targetAudience}`
       console.error(`Error with OpenAI API request: ${error.message}`);
       res.status(500).json({
         error: {
-          message: 'An error occurred during your request.',
-        }
+          message: "An error occurred during your request.",
+        },
       });
     }
   }
 }
+
+function generatePrompt(companyName, companyDescription, productDescription, targetAudience) {
+  return `Brainstorm an original marketing campaign ideas for ${companyName}, an ${companyDescription}. Let your imagination run wild. Provide as much detail as possible and a creative brief.
+
+  PRODUCT DESCRIPTION: ${productDescription}.
+  
+  TARGET AUDIENCE: ${targetAudience}.
+ `;
+}
+
