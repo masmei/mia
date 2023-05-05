@@ -1,45 +1,30 @@
-# OpenAI API Quickstart - Node.js example app
+# Marketing Ideation Assistant
 
-This is an example pet name generator app used in the OpenAI API [quickstart tutorial](https://platform.openai.com/docs/quickstart). It uses the [Next.js](https://nextjs.org/) framework with [React](https://reactjs.org/). Check out the tutorial or follow the instructions below to get set up.
+## Overview
 
-![Text box that says name my pet with an icon of a dog](https://user-images.githubusercontent.com/10623307/213887080-b2bc4645-7fdb-4dbd-ae42-efce00d0dc29.png)
+Marketing Ideation Assistant (MIA) is a web application that uses the OpenAI API to generate marketing campaign ideas. The user provides information about their company, their product, and their target audience, and the application generates creative and unique marketing campaign ideas.
+
+## Requirements
+
+To run this project, you will need:
+
+- Node.js
+- npm or yarn
+- An OpenAI API key
+
+## Installation
+
+Follow these steps to install and run the project:
+
+1. Clone this repository.
+2. Install the project dependencies.
+3. Create a `.env.local` file in the root of the project and add your OpenAI API key.
+
+## Usage
+
+To run the application in development mode, use the command: npm run dev
 
 
-## Setup
+Then, open your web browser and navigate to [http://localhost:3000](http://localhost:3000) to view the application.
 
-1. If you don’t have Node.js installed, [install it from here](https://nodejs.org/en/) (Node.js version >= 14.6.0 required)
 
-2. Clone this repository
-
-3. Navigate into the project directory
-
-   ```bash
-   $ cd openai-quickstart-node
-   ```
-
-4. Install the requirements
-
-   ```bash
-   $ npm install
-   ```
-
-5. Make a copy of the example environment variables file
-
-   On Linux systems: 
-   ```bash
-   $ cp .env.example .env
-   ```
-   On Windows:
-   ```powershell
-   $ copy .env.example .env
-   ```
-6. Add your [API key](https://platform.openai.com/account/api-keys) to the newly created `.env` file
-
-7. Run the app
-
-   ```bash
-   $ npm run dev
-   ```
-
-You should now be able to access the app at [http://localhost:3000](http://localhost:3000)! For the full context behind this example app, check out the [tutorial](https://platform.openai.com/docs/quickstart).
-# mia

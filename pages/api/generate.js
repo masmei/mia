@@ -1,15 +1,20 @@
-
+// Import the necessary modules from OpenAI
 import { Configuration, OpenAIApi } from "openai";
 
+// Log the API key for OpenAI (should be configured in your environment variables)
 console.log("OPENAI_API_KEY:", process.env.OPENAI_API_KEY);
 
+// Create a new OpenAI configuration with your API key
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// Create a new instance of the OpenAI API
 const openai = new OpenAIApi(configuration);
 
+// Export a default asynchronous function to handle requests and responses
 export default async function (req, res) {
+  // If the API key is not configured, send an error response
   if (!configuration.apiKey) {
     res.status(500).json({
       error: {
@@ -20,8 +25,10 @@ export default async function (req, res) {
     return;
   }
 
+  // Extract the required information from the request body
   const { companyName, companyDescription, productDescription, targetAudience } = req.body;
 
+  // If any required information is missing, send an error response
   if (!companyName || !companyDescription || !productDescription || !targetAudience) {
     res.status(400).json({
       error: {
@@ -32,6 +39,7 @@ export default async function (req, res) {
   }
 
   try {
+    // Call the OpenAI API to generate a completion based on the given prompt
     const completion = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: generatePrompt(companyName, companyDescription, productDescription, targetAudience),
@@ -39,10 +47,10 @@ export default async function (req, res) {
       max_tokens: 300,
     });
 
-    // const result = completion.data.choices[0].text.trim();
-
+    // Send the generated completion as the response
     res.status(200).json({ result: completion.data.choices[0].text });
   } catch (error) {
+    // If there is an error with the API request, log it and send an error response
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json(error.response.data);
@@ -57,6 +65,7 @@ export default async function (req, res) {
   }
 }
 
+// Function to generate the prompt for the OpenAI API
 function generatePrompt(companyName, companyDescription, productDescription, targetAudience) {
   return `Brainstorm an original marketing campaign ideas for ${companyName}, an ${companyDescription}. Let your imagination run wild. Provide as much detail as possible and a creative brief.
 
@@ -65,4 +74,3 @@ function generatePrompt(companyName, companyDescription, productDescription, tar
   TARGET AUDIENCE: ${targetAudience}.
  `;
 }
-
