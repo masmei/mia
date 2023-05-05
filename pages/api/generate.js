@@ -67,7 +67,7 @@ export default async function (req, res) {
 
 // Function to generate the prompt for the OpenAI API
 function generatePrompt(companyName, companyDescription, productDescription, targetAudience) {
-  return `Brainstorm an original marketing campaign ideas for ${companyName}, an ${companyDescription}. Let your imagination run wild. Provide as much detail as possible and a creative brief.
+  return `Brainstorm an original marketing campaign for ${companyName}, an ${companyDescription}. Let your imagination run wild. Provide as much detail as possible and a creative brief.
 
   PRODUCT DESCRIPTION: ${productDescription}.
   
